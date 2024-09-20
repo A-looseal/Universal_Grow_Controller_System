@@ -1,0 +1,187 @@
+//C0=2+2 C1=4+2 | C2=5+2 | C3=6+2 | C4=4+2
+//# SENSOR CONTROLLER
+/*
+++++++++++++++++++++++++++++++++++++++++++
++ Serial Communication - 2 Pins          + C0
++ - D0, D1                               +
+++++++++++++++++++++++++++++++++++++++++++
+*/
+
+/*
+WATER FLOW METERS - https://bc-robotics.com/tutorials/using-a-flow-sensor-with-arduino/
+++++++++++++++++++++++++++++++++++++++++++
++ Flow Meter: Water: Table               + C2
++ - D2 = INT0                            +
++ - 10K Pull up resistor                 +
+++++++++++++++++++++++++++++++++++++++++++
++ Flow Meter: Water: Xtra                + C2
++ - D3 = INT1                            +
++ - 10K Pull up resistor                 +
+++++++++++++++++++++++++++++++++++++++++++
+int flowPin = 2;    //This is the input pin on the Arduino
+double flowRate;    //This is the value we intend to calculate.
+double flowVolume;    //This is the value we intend to calculate.
+volatile int count; //This integer needs to be set as volatile to ensure it updates correctly during the interrupt process.
+
+pinMode(flowPin, INPUT);           //Sets the pin as an input
+  attachInterrupt(0, Flow, RISING);  //Configures interrupt 0 (pin 2 on the Arduino Uno) to run the function "Flow"
+
+void Flow()
+{
+   count++; //Every time this function is called, increment "count" by 1
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  count = 0;      // Reset the counter so we start counting from 0 again
+  interrupts();   //Enables interrupts on the Arduino
+  delay (1000);   //Wait 1 second
+  noInterrupts(); //Disable the interrupts on the Arduino
+
+  //Start the math
+  flowRate = (count * 2.25);        //Take counted pulses in the last second and multiply by 2.25mL
+  flowRate = flowRate * 60;         //Convert seconds to minutes, giving you mL / Minute
+  flowRate = flowRate / 1000;       //Convert mL to Liters, giving you Liters / Minute
+
+  flowVolume = flowVolume + (count * 2.25);        //Take counted pulses in the last second and multiply by 2.25mL
+
+  Serial.println(flowRate);         //Print the variable flowRate to Serial
+  Serial.println(flowVolume);         //Print the variable flowRate to Serial
+}
+*/
+
+
+WATER LEVEL SENSORS
+++++++++++++++++++++++++++++++++++++++++++
++ Level Sensor: Water: Reservoir         + C1
++ - D4                                   +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++
++ Level Sensor: Water: Table             + C2
++ - D5                                   +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+
+WATER QUALITY SENSORS
+++++++++++++++++++++++++++++++++++++++++++
++ TDS Sensor: Water: Reservoir           + C1
++ - D6                                   +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++
++ pH Sensor: Water: Reservoir            + C1
++ - D7                                   +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+
+WATER TEMPERATURE SENSORS: 
+++++++++++++++++++++++++++++++++++++++++++
++ Temp Sensor: Water: Reservoir          + C1
++ - D8                                   +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++
++ Temp Sensor: Water: Table              + C2
++ - D9                                   +
++ - 4.7K Pull up resistor                +
+++++++++++++++++++++++++++++++++++++++++++
+
+
+AIR TEMPERATURE SENSORS: DHT22: 6 PINS
+++++++++++++++++++++++++++++++++++++++++++
++ Temp Sensor: Air: Environment          + C3
++ - D10                                  +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++
++ Temp Sensor: Air: Table: Right         + C3
++ - D11                                  +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++
++ Temp Sensor: Air: Table: Left          + C3
++ - D12                                  +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++
++ Temp Sensor: Air: Xtra: Right          + C3
++ - D13                                  +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++
++ Temp Sensor: Air: Xtra: Left           + C3
++ - D14                                  +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++
++ Temp Sensor: Air: Xtra: Center Right   + C3
++ - D15                                  +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+
+#include "DHT.h"
+
+#define DHTTYPE DHT22
+
+uint8_t DHTPin = 2;
+float Temperature;
+float Humidity;
+float Temp_Fahrenheit;
+
+DHT dht(DHTPin, DHTTYPE);
+
+pinMode(DHTPin, INPUT);
+  dht.begin();
+
+void GetEnviroReading(byte _device){
+Humidity = dht.readHumidity();
+  // Read temperature as Celsius (the default)
+  Temperature = dht.readTemperature();
+  // Read temperature as Fahrenheit (isFahrenheit = true)
+  Temp_Fahrenheit = dht.readTemperature(true);
+  // Check if any reads failed and exit early (to try again).
+  if (isnan(Humidity) || isnan(Temperature) || isnan(Temp_Fahrenheit)) {
+    Serial.println(F("Failed to read from DHT sensor!"));
+    return;
+  }
+}
+
+NEO-PIXELS
+++++++++++++++++++++++++++++++++++++++++++
++ Neopixel: Table                        + C3
++ - D16                                  +
++ - 4.7K Pull up resistor                + 
+++++++++++++++++++++++++++++++++++++++++++
+
+++++++++++++++++++++++++++++++++++++++++++
++ RTC Module - 2 Pins                    + C4
++ - A4(18), A5(19)                       +
+++++++++++++++++++++++++++++++++++++++++++
+#include <DS3231.h>
+
+DS3231  rtc(SDA, SCL);
+
+int currentTime;
+int currentHour;
+int currentDay;
+
+void setup() { 
+ rtc.begin(); // Initialize the rtc object
+}
+ 
+void loop() { 
+
+ GetCurrentTime();
+ delay(100); // 100 millisecond delay 
+}
+
+
+void GetCurrentTime(){
+ 	currentDOW = rtc.getDOW();		// get the current day of the week from the RTC
+ 	currentHour = rtc.getHour();		// get the current Hour from the RTC
+ 	currentMinute = rtc.getMinute();	// get the current Minute from the RTC
+	currentSecond = rtc.getMinute();	// get the current Minute from the RTC
+}
+
+
