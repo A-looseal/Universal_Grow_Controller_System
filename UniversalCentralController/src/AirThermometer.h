@@ -1,8 +1,8 @@
 #ifndef AirThermometer_h
 #define AirThermometer_h
 #include "Arduino.h"
-#include <DHT.h>
-#include "User_Config.h"
+#include "DHT.h"
+#include "config/User_Config.h"
 
 float zoneA_currentAirTemperature;
 bool zoneA_isAirTemperatureHot = false;

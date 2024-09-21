@@ -3,7 +3,7 @@
 #include "Arduino.h"
 #include "OneWire.h"
 #include "DallasTemperature.h"
-#include "User_Config.h"
+#include "config/User_Config.h"
 
 float zoneA_currentWaterTemperature;
 bool zoneA_isWaterTemperatureHot = false;

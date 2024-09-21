@@ -9,6 +9,9 @@ DateTime currentTime;    // current time object
 int currentHour;
 int currentMinute;
 
+/* SYSTEM CLOCK VARIABLES */
+unsigned long currentMillis;
+
 void InitializeClock()
 {
     OnBoardClock.begin();
@@ -26,6 +29,7 @@ void InitializeClock()
 
 void UpdateClock()
 {
+    currentMillis = millis();
     // get a reading of the current time
     currentTime = OnBoardClock.now();
     currentHour = (currentTime.hour());

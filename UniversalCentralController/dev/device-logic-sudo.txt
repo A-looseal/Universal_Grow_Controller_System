@@ -1,0 +1,56 @@
+INTAKE FAN (relay)
+device can turn on if:
+- atmosphereArea air humidity == ELEVATED or CRITICAL; 
+- atmosphereArea air co2 == ELEVATED or CRITICAL;
+device will be forced off it:
+- atmosphereArea air humidity == NORMAL; 
+- atmosphereArea air co2 == NORMAL;
+
+
+EXHAUST FAN (relay)
+device can turn on if:
+- atmosphereArea air humidity == ELEVATED or CRITICAL; 
+- atmosphereArea air co2 == ELEVATED or CRITICAL;
+device will be forced off it:
+- atmosphereArea air humidity == NORMAL; 
+- atmosphereArea air co2 == NORMAL;
+
+
+WIND FAN (pwm)
+device can turn on if:
+- canopyArea air temperature == ELEVATED or CRITICAL; 
+
+
+SUN LIGHT (relay)
+device can turn on if:
+- current time > on trigger time;
+canopyArea air temperature == NORMAL; 
+device will be forced off it:
+- current time > off trigger time;
+canopyArea air temperature == ELEVATED or CRITICAL; 
+
+
+WATER PUMP (relay)
+device can turn on if:
+- current time > on trigger time;
+- resovoirArea water temperature == NORMAL;
+- resovoirArea air humidity == NORMAL;
+- GroundArea air humidity == NORMAL;
+
+device will be forced off if:
+- current time > off trigger time;
+- resovoirArea water temperature == ELEVATED or CRITICAL;
+- resovoirArea air humidity == ELEVATED or CRITICAL;
+- GroundArea air humidity == ELEVATED or CRITICAL;
+
+OXYGEN PUMP (relay)
+device can turn on if:
+- resovoirArea water temperature == NORMAL;
+- resovoirArea air humidity == NORMAL;
+- GroundArea air humidity == NORMAL;
+
+device will be forced off if:
+- current time > off trigger time;
+- resovoirArea water temperature == ELEVATED or CRITICAL;
+- resovoirArea air humidity == ELEVATED or CRITICAL;
+- GroundArea air humidity == ELEVATED or CRITICAL;

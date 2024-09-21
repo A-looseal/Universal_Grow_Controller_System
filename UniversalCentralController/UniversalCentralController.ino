@@ -1,6 +1,8 @@
 #include "src/ClockController.h"
 #include "src/WaterThermometer.h"
 #include "src/AirThermometer.h"
+#include "src/CycleRelay.h"
+
 
 /* SYSTEM CLOCK VARIABLES */
 unsigned long currentMillis;
@@ -20,10 +22,12 @@ void loop()
     GetData_AirClimate();
     GetData_WaterClimate();
 
+#ifdef ENABLE_SERIAL_OUTPUT
     Serial.print("current hour: ");
     Serial.println(currentHour);
     Serial.print("current minute: ");
     Serial.println(currentMinute);
+#endif
 
     CheckWater_Temperature("ZONE A", ZONEA_WATER_TEMPERATURE_CRITICAL, ZONEA_WATER_TEMPERATURE_MAX, zoneA_currentWaterTemperature, zoneA_isWaterTemperatureCritical, zoneA_isWaterTemperatureHot);
     CheckWater_Temperature("ZONE B", ZONEB_WATER_TEMPERATURE_CRITICAL, ZONEB_WATER_TEMPERATURE_MAX, zoneB_currentWaterTemperature, zoneB_isWaterTemperatureCritical, zoneB_isWaterTemperatureHot);
