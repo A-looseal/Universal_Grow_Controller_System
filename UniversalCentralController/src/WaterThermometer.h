@@ -5,8 +5,6 @@
 #include "DallasTemperature.h"
 #include "User_Config.h"
 
-#define ENABLE_SERIAL_OUTPUT
-
 float zoneA_currentWaterTemperature;
 bool zoneA_isWaterTemperatureHot = false;
 bool zoneA_isWaterTemperatureCritical = false;
@@ -36,7 +34,7 @@ void InitializeWaterTemperature()
     zoneC_WaterSensor.begin();
 }
 
-void UpdateWaterTemperature()
+void GetData_WaterClimate()
 {
     zoneA_WaterSensor.requestTemperatures();
     zoneB_WaterSensor.requestTemperatures();
@@ -47,39 +45,35 @@ void UpdateWaterTemperature()
     zoneC_currentWaterTemperature = zoneC_WaterSensor.getTempCByIndex(0);
 }
 
-bool Check_Water_Temperature(String _zoneName, float _critTemp, float _maxTemp, float _currentTemp, bool _critFlag, bool _hotFlag, DallasTemperature _sensor)
+bool CheckWater_Temperature(String _zoneName, float _criticalTemperatureThreshold, float _maximumTemperatureThreshold, float _currentTemperatureValue, bool _criticalAlertFlag, bool _hotAlertFlag)
 {
-
-    _sensor.requestTemperatures();
-    _currentTemp = _sensor.getTempCByIndex(0);
-
 #ifdef ENABLE_SERIAL_OUTPUT
     Serial.print(_zoneName);
     Serial.print(F(" CURRENT WATER TEMPERATURE: "));
 #endif
 
-    if (_currentTemp != DEVICE_DISCONNECTED_C)
+    if (_currentTemperatureValue != DEVICE_DISCONNECTED_C)
     {
         // if temperature is above critical threshold.
-        if (_currentTemp >= _critTemp)
+        if (_currentTemperatureValue >= _criticalTemperatureThreshold)
         {
-            _critFlag = true;
-            _hotFlag = true;
+            _criticalAlertFlag = true;
+            _hotAlertFlag = true;
 #ifdef ENABLE_SERIAL_OUTPUT
             Serial.print(F("CRITICAL: "));
-            Serial.println(_currentTemp);
+            Serial.println(_currentTemperatureValue);
 #endif
             return false;
         }
 
         // if temperature is above the max threshold
-        else if (_currentTemp >= _maxTemp && _currentTemp < _critTemp)
+        else if (_currentTemperatureValue >= _maximumTemperatureThreshold && _currentTemperatureValue < _criticalTemperatureThreshold)
         {
-            _critFlag = false;
-            _hotFlag = true;
+            _criticalAlertFlag = false;
+            _hotAlertFlag = true;
 #ifdef ENABLE_SERIAL_OUTPUT
             Serial.print(F("ELEVATED: "));
-            Serial.println(_currentTemp);
+            Serial.println(_currentTemperatureValue);
 #endif
             return false;
         }
@@ -87,11 +81,11 @@ bool Check_Water_Temperature(String _zoneName, float _critTemp, float _maxTemp, 
         // if temperature is below critical & max threshold
         else
         {
-            _critFlag = false;
-            _hotFlag = false;
+            _criticalAlertFlag = false;
+            _hotAlertFlag = false;
 #ifdef ENABLE_SERIAL_OUTPUT
             Serial.print(F("NORMAL: "));
-            Serial.println(_currentTemp);
+            Serial.println(_currentTemperatureValue);
 #endif
             return true;
         }
