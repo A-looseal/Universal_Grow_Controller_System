@@ -3,7 +3,14 @@
 #include "Arduino.h"
 #include "OneWire.h"
 #include "DallasTemperature.h"
+#include "config/zone_config/Config_Atmosphere.h"
+#include "config/zone_config/Config_Canopy.h"
+#include "config/zone_config/Config_Resovoir.h"
 #include "config/User_Config.h"
+
+#define ENABLE_SERIAL_OUTPUT
+//#define TEST_WATER_TEMPERATURE 50
+
 
 float zoneA_currentWaterTemperature;
 bool zoneA_isWaterTemperatureHot = false;
@@ -45,11 +52,15 @@ void GetData_WaterClimate()
     zoneC_currentWaterTemperature = zoneC_WaterSensor.getTempCByIndex(0);
 }
 
-bool CheckWater_Temperature(String _zoneName, float _criticalTemperatureThreshold, float _maximumTemperatureThreshold, float _currentTemperatureValue, bool _criticalAlertFlag, bool _hotAlertFlag)
+bool CheckWater_Temperature(String _zoneName, float _criticalTemperatureThreshold, float _maximumTemperatureThreshold, float _currentTemperatureValue, bool &_criticalAlertFlag, bool &_hotAlertFlag)
 {
+#ifdef TEST_WATER_TEMPERATURE
+    _currentHumidityStorage = _currentHumidityStorage + TEST_AIR_HUMIDITY;
+#endif
+
 #ifdef ENABLE_SERIAL_OUTPUT
     Serial.print(_zoneName);
-    Serial.print(F(" CURRENT WATER TEMPERATURE: "));
+    Serial.print(F(" Current water temperature: "));
 #endif
 
     if (_currentTemperatureValue != DEVICE_DISCONNECTED_C)
@@ -92,8 +103,16 @@ bool CheckWater_Temperature(String _zoneName, float _criticalTemperatureThreshol
     }
     else
     {
-        Serial.println("Error: Could not read temperature data");
+#ifdef ENABLE_SERIAL_OUTPUT
+        Serial.println("nan");
+#endif
     }
 }
 
+void ReadAllWaterTemperature()
+{
+    CheckWater_Temperature("ZONE A", ZONEA_WATER_TEMPERATURE_CRITICAL, ZONEA_WATER_TEMPERATURE_MAX, zoneA_currentWaterTemperature, zoneA_isWaterTemperatureCritical, zoneA_isWaterTemperatureHot);
+    CheckWater_Temperature("ZONE B", ZONEB_WATER_TEMPERATURE_CRITICAL, ZONEB_WATER_TEMPERATURE_MAX, zoneB_currentWaterTemperature, zoneB_isWaterTemperatureCritical, zoneB_isWaterTemperatureHot);
+    CheckWater_Temperature("ZONE C", ZONEC_WATER_TEMPERATURE_CRITICAL, ZONEC_WATER_TEMPERATURE_MAX, zoneC_currentWaterTemperature, zoneC_isWaterTemperatureCritical, zoneC_isWaterTemperatureHot);
+}
 #endif
