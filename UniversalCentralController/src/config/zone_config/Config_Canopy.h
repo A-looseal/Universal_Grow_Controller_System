@@ -3,8 +3,8 @@
 #include "Arduino.h"
 
 //air temperature sensor
-#define ZONEB_AIR_TEMPERATURE_CRITICAL 32
-#define ZONEB_AIR_TEMPERATURE_MAX 30
+#define ZONEB_AIR_TEMPERATURE_CRITICAL 55
+#define ZONEB_AIR_TEMPERATURE_MAX 40
 #define ZONEB_AIR_HUMIDITY_CRITICAL 75
 #define ZONEB_AIR_HUMIDITY_MAX 70
 
@@ -14,7 +14,7 @@
 
 //
 #define ZONEB_AIR_SENSOR_TYPE DHT22                     //(the pin the water temperature sensor is currently connected to)
-#define ZONEB_AIR_SENSOR_PIN 9 
-#define ZONEB_WATER_TEMPERATURE_SENSOR_PIN 10
+#define ZONEB_AIR_SENSOR_PIN 29 
+#define ZONEB_WATER_TEMPERATURE_SENSOR_PIN 28
 
 #endif

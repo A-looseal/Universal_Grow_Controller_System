@@ -4,9 +4,9 @@
 
 /* WIND FAN CONSTANTS */
 // Necessary Constants
-#define WINDFAN_1_PIN 13 //(the pin the pump is currently connected to)
-#define WINDFAN_2_PIN 13 //(the pin the pump is currently connected to)
-#define WINDFAN_3_PIN 13 //(the pin the pump is currently connected to)
+#define WINDFAN_1_PIN 4 //(the pin the pump is currently connected to)
+#define WINDFAN_2_PIN 5 //(the pin the pump is currently connected to)
+#define WINDFAN_3_PIN 6 //(the pin the pump is currently connected to)
 #define WINDFAN_4_PIN 13 //(the pin the pump is currently connected to)
 #define WINDFAN_5_PIN 13 //(the pin the pump is currently connected to)
 #define WINDFAN_6_PIN 13 //(the pin the pump is currently connected to)

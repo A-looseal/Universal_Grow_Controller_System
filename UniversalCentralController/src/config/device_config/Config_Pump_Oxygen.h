@@ -4,16 +4,22 @@
 
 
 /* OXYGEN PUMP CONSTANTS */
-// User Set Parameters
-#define OXYGENPUMP_TIME_TURN_ON_HOUR 19
-#define OXYGENPUMP_TIME_TURN_ON_MINUTE 27
-#define OXYGENPUMP_TIME_TURN_OFF_HOUR 23
-#define OXYGENPUMP_TIME_TURN_OFF_MINUTE 0
-#define OXYGENPUMP_FREQUENCY_ON 1000  //(the amount of time to run the pump for during a cycle. In seconds)
-#define OXYGENPUMP_FREQUENCY_OFF 1000 //(the amount of time to run the pump for during a cycle. In seconds)
+// ON TIME SETTINGS
+#define OXYGENPUMP_TIME_TURN_ON_HOUR 24 // 12
+#define OXYGENPUMP_TIME_TURN_ON_MINUTE 30
+#define OXYGENPUMP_TIME_TURN_ON_PERIOD 1    // PM
+
+//OFF TIME SETTINGS
+#define OXYGENPUMP_TIME_TURN_OFF_HOUR 5
+#define OXYGENPUMP_TIME_TURN_OFF_MINUTE 30
+#define OXYGEN_TIME_TURN_OFF_PERIOD 0 // AM
+
+//FREQUENY SETTINGS
+#define OXYGENPUMP_FREQUENCY_ON 6000  //(the amount of time to run the pump for during a cycle. In seconds)
+#define OXYGENPUMP_FREQUENCY_OFF 120000 //(the amount of time to run the pump for during a cycle. In seconds)
 
 // Necessary Constants
-#define OXYGENPUMP_PIN 13 //(the pin the pump is currently connected to)
+#define OXYGENPUMP_PIN 49 //(the pin the pump is currently connected to)
 void InitializeOxygenPump()
 {
     // Oxygen Pump (Relay)

@@ -34,7 +34,7 @@ void SunLightLogic()
             Serial.print(F("attempting to disable sun light capability: "));
 #endif
             // check if the current time is greater than the set on time, but in the same period.
-            if (currentHour >= SUNLIGHT_TIME_TURN_OFF_HOUR)
+            if (currentHour >= SUNLIGHT_TIME_TURN_OFF_HOUR && currentPeriod == SUNLIGHT_TIME_TURN_OFF_PERIOD)
             {
                 // if the hardare should be enabled, enable hardware capability
                 canSunShine = false;
@@ -56,6 +56,9 @@ void SunLightLogic()
 
 void WaterPumpLogic()
 {
+    canWaterFlow = true;
+#ifdef TIME_CONTROLLED
+
     // if hardware is not currently enabled
     if (canWaterFlow == false)
     {
@@ -86,7 +89,7 @@ void WaterPumpLogic()
         Serial.print(F("attempting to disable water capability: "));
 #endif
         // check if the current time is greater than the set on time, but in the same period.
-        if (currentHour >= WATERPUMP_TIME_TURN_OFF_HOUR)
+        if (currentHour >= WATERPUMP_TIME_TURN_OFF_HOUR && WATERPUMP_TIME_TURN_OFF_PERIOD)
         {
             // if the hardare should be enabled, enable hardware capability
             canWaterFlow = false;
@@ -101,6 +104,8 @@ void WaterPumpLogic()
 #endif
         }
     }
+#endif
+
     CycleWaterPump();
 }
 
@@ -113,7 +118,7 @@ void OxygenPumpLogic()
         Serial.print(F("attempting to enable oxygen capability: "));
 #endif
         // check if the current time is greater than the set on time, but in the same period.
-        if (currentHour >= OXYGENPUMP_TIME_TURN_ON_HOUR)
+        if (currentHour >= OXYGENPUMP_TIME_TURN_ON_HOUR && currentPeriod == OXYGENPUMP_TIME_TURN_ON_PERIOD)
         {
             // if the hardare should be enabled, enable hardware capability
             canOxygenFlow = true;
@@ -134,7 +139,7 @@ void OxygenPumpLogic()
         Serial.print(F("attempting to disable oxygen capability: "));
 #endif
         // check if the current time is greater than the set on time, but in the same period.
-        if (currentHour >= OXYGENPUMP_TIME_TURN_OFF_HOUR)
+        if (currentHour >= OXYGENPUMP_TIME_TURN_OFF_HOUR && currentPeriod == WATERPUMP_TIME_TURN_OFF_PERIOD)
         {
             // if the hardare should be enabled, enable hardware capability
             canOxygenFlow = false;

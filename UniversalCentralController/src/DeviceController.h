@@ -62,7 +62,7 @@ void CycleSunLight()
     if (sunLightState == false)
     { // check if canopy area is overheating
       Serial.println(F("Attempting to cycle sun light On"));
-      if (zoneB_isAirHumidityCritical == false || zoneB_isAirTemperatureCritical == false)
+      if (zoneB_isAirTemperatureCritical == false)
       {
         // turn the sun light on
         digitalWrite(SUNLIGHT_PIN, HIGH);
@@ -75,7 +75,7 @@ void CycleSunLight()
     // check if the light is already off
     if (sunLightState == true)
     {
-      if (zoneB_isAirHumidityCritical == true || zoneB_isAirTemperatureCritical == true)
+      if (zoneB_isAirTemperatureCritical == true)
       {
         Serial.println(F("Temperature is CRITICAL, Shutting Sun Light down!"));
         // turn the sun light off
@@ -90,11 +90,14 @@ void CycleSunLight()
   // turn the light off if it is not time for it to be on
   if (canSunShine == false)
   {
-    // turn the sun light off
-    digitalWrite(SUNLIGHT_PIN, LOW);
-    // track current state of the pump
-    sunLightState = false;
-    Serial.println(F("sun light is off."));
+    if (sunLightState == true)
+    {
+      // turn the sun light off
+      digitalWrite(SUNLIGHT_PIN, LOW);
+      // track current state of the pump
+      sunLightState = false;
+      Serial.println(F("sun light is off."));
+    }
   }
 }
 
@@ -116,7 +119,6 @@ void CycleIntakeFan()
       }
     }
 
-    
     else
     {
       if (intakeFanState == true)
@@ -128,22 +130,20 @@ void CycleIntakeFan()
         Serial.println(F("disabled the intake fan."));
       }
     }
-    
   }
 
-
-// turn the intake fan off if it is not time for it to be on
-if (canIntakeFlow == false)
-{
-  if (intakeFanState == true)
+  // turn the intake fan off if it is not time for it to be on
+  if (canIntakeFlow == false)
   {
-    // turn the intnake fan off
-    digitalWrite(INTAKEFAN_PIN, LOW);
-    // track current state of the intake fan
-    intakeFanState = false;
-    Serial.println(F("disabled the intake fan."));
+    if (intakeFanState == true)
+    {
+      // turn the intnake fan off
+      digitalWrite(INTAKEFAN_PIN, LOW);
+      // track current state of the intake fan
+      intakeFanState = false;
+      Serial.println(F("disabled the intake fan."));
+    }
   }
-}
 }
 
 void CycleExhaustFan()
@@ -226,11 +226,14 @@ void CycleWaterPump()
   // turn the water off if it is not time for it to be on
   if (canWaterFlow == false)
   {
-    // turn the water pump off
-    digitalWrite(WATERPUMP_PIN, LOW);
-    // track current state of the water pump
-    waterPumpState = false;
-    Serial.println(F("disabled the water pump."));
+    if (waterPumpState == true)
+    {
+      // turn the water pump off
+      digitalWrite(WATERPUMP_PIN, LOW);
+      // track current state of the water pump
+      waterPumpState = false;
+      Serial.println(F("disabled the water pump."));
+    }
   }
 }
 
@@ -239,7 +242,7 @@ void CycleOxygenPump()
   if (canOxygenFlow == true)
   {
     // check if reseovoir area is not currently overheating
-    if (zoneC_isAirHumidityCritical == false || zoneC_isAirTemperatureCritical == false)
+    if (zoneC_isWaterTemperatureCritical == false)
     {
       // check if oxygen pump is currently off
       if (oxygenPumpState == false)
@@ -255,7 +258,7 @@ void CycleOxygenPump()
     // check if the oxygen pump is currently on
     if (oxygenPumpState == true)
     { // check if resovoir area is currently overheating
-      if (zoneA_isAirHumidityCritical == true || zoneA_isAirTemperatureCritical == true)
+      if (zoneC_isWaterTemperatureCritical == true)
       {
         // turn the oxygen pump off
         digitalWrite(OXYGENPUMP_PIN, LOW);
@@ -269,11 +272,14 @@ void CycleOxygenPump()
   // turn the oxygen off if it is not time for it to be on
   if (canOxygenFlow == false)
   {
-    // turn the oxygen pump off
-    digitalWrite(OXYGENPUMP_PIN, LOW);
-    // track current state of the oxygen pump
-    oxygenPumpState = false;
-    Serial.println(F("disabled the oxygen pump."));
+    if (oxygenPumpState == true)
+    {
+      // turn the oxygen pump off
+      digitalWrite(OXYGENPUMP_PIN, LOW);
+      // track current state of the oxygen pump
+      oxygenPumpState = false;
+      Serial.println(F("disabled the oxygen pump."));
+    }
   }
 }
 

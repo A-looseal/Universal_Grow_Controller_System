@@ -4,7 +4,7 @@
 
 /* INTAKE FAN CONSTANTS */
 // Necessary Constants
-#define INTAKEFAN_PIN 13 //(the pin the pump is currently connected to)
+#define INTAKEFAN_PIN 50 //(the pin the pump is currently connected to)
 
 void InitializeIntakeFan()
 {
